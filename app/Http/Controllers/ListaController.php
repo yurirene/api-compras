@@ -13,7 +13,6 @@ class ListaController extends Controller
     public function get()
     {
         $retorno = array();
-        // return response()->json(Categoria::with('produtos')->get()->toArray(),200);
         $categorias_na_lista = Categoria::whereHas('produtos.lista')->get();
         foreach ($categorias_na_lista as $key => $categoria) {
             $retorno[$key]['categoria'] = $categoria->nome;
@@ -45,6 +44,29 @@ class ListaController extends Controller
                 'quantidade' => $request->quantidade
             ]);
             return response()->json(['message' => 'Adição Realizada com Sucesso!'], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao Realizar Operação!'], 204);
+        }
+    }
+
+    public function edit(Request $request)
+    {
+        try {
+            $produto = Produto::findOrFail($request->produto_id);
+            $produto->lista->quantidade = $request->quantidade;
+            $produto->lista->save();
+            return response()->json(['message' => 'Atualização Realizada com Sucesso!'], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'Erro ao Realizar Operação!'], 204);
+        }
+    }
+
+    public function delete(Request $request) 
+    {
+        try {
+            $produto = Produto::findOrFail($request->produto_id);
+            $produto->lista->delete();
+            return response()->json(['message' => 'Remoção Realizada com Sucesso!'], 200);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'Erro ao Realizar Operação!'], 204);
         }

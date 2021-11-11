@@ -15,9 +15,10 @@ class CreateComprasTable extends Migration
     {
         Schema::create('compras', function (Blueprint $table) {
             $table->id();
-            $table->string('supermecardo');
+            $table->string('supermercado');
             $table->date('data_compra');
             $table->decimal('valor_total')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
