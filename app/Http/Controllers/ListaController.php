@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use App\Models\Compra;
 use App\Models\Lista;
 use App\Models\Produto;
 use Illuminate\Http\Request;
@@ -15,9 +16,16 @@ class ListaController extends Controller
         $retorno = array();
         $categorias_na_lista = Categoria::whereHas('produtos.lista')->get();
         foreach ($categorias_na_lista as $key => $categoria) {
+            $produtos = $categoria->produtos()->whereHas('lista')->whereDoesntHave('comprado', function($sql) {
+                return $sql->where('compra_id', Compra::where('status', 1)->first()->id);
+            })->get();
+            if ($produtos->count() == 0) {
+                continue;
+            }
             $retorno[$key]['categoria'] = $categoria->nome;
             $retorno[$key]['icon'] = $categoria->icon;
-            foreach ($categoria->produtos()->whereHas('lista')->get() as $produto) {
+            
+            foreach ($produtos as $produto) {
                 $retorno[$key]['produtos'][] = [
                     'id' => $produto->id,
                     'produto' => $produto->nome,

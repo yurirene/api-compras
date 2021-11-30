@@ -26,5 +26,8 @@ Route::post('/delete-item-lista', [ListaController::class, 'delete']);
  * ROTAS DE COMPRAS
  */
 Route::get('/compra', [CompraController::class, 'get']);
+Route::post('/comprar-item', [CompraController::class, 'comprarItem']);
 Route::post('/iniciar-compra', [CompraController::class, 'iniciar']);
+Route::post('/lista-compra', [CompraController::class, 'lista']);
+Route::post('/delete-item-lista-compra', [CompraController::class, 'delete']);
 

@@ -15,4 +15,9 @@ class Compra extends Model
     {
         return Carbon::createFromFormat('Y-m-d', $value)->format('d/m/Y');
     }
+
+    public function itens()
+    {
+        return $this->hasMany(CompraItem::class);
+    }
 }

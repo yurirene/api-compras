@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class CompraItem extends Model
 {
-    use HasFactory;
+    protected $table = 'compra_items';
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+    
+    
+    public function produto()
+    {
+        return $this->belongsTo(Produto::class);
+    } 
 }

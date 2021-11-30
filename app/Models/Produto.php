@@ -20,4 +20,9 @@ class Produto extends Model
     {
         return $this->hasOne(Lista::class, 'produto_id', 'id');
     }
+
+    public function comprado()
+    {
+        return $this->hasMany(CompraItem::class);
+    }
 }
